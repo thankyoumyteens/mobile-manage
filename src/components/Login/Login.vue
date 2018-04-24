@@ -11,13 +11,15 @@
       </div>
       <div class="login-item">
         <router-link class="login-link" to="register">注册卖家账号</router-link>
-        <el-button type="primary" :loading="isLoading">登陆</el-button>
+        <el-button type="primary" :loading="isLoading" @click="doLogin">登陆</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import axios from 'axios'
+  import { path } from '@/commons/address.js'
   export default {
     data() {
       return {
@@ -26,6 +28,36 @@
           username: '',
           password: ''
         }
+      }
+    },
+    methods: {
+      doLogin() {
+        this.isLoading = true
+        axios.post(path()['login'], {
+          username: this.form.username,
+          password: this.form.password
+        }).then((response) => {
+          this.isLoading = false
+          let data = response.data
+          if (data.status === 0) {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'success'
+            })
+            this.$emit('login', data.data)
+            this.$router.push('/')
+          } else {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
+          }
+        }).catch((error) => {
+          this.isLoading = false
+          console.log(error)
+        })
       }
     }
   }

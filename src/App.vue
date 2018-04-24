@@ -2,6 +2,7 @@
   <div id="app">
     <el-container direction="vertical">
       <el-header>
+        <!--用户 start-->
         <div class="user-info" v-if="!user">
           <router-link tag="div" to="/login" class="user-info-title">登陆</router-link>
         </div>
@@ -12,37 +13,35 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="logout">退出</el-dropdown-item>
-              <el-dropdown-item>狮子头111111111111111111</el-dropdown-item>
-              <el-dropdown-item>螺蛳粉</el-dropdown-item>
-              <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-              <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+              <el-dropdown-item command="userInfo">账号管理</el-dropdown-item>
+              <el-dropdown-item divided command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+        <!--用户 end-->
       </el-header>
       <el-container direction="horizontal">
         <el-aside>
           <el-menu
-            default-active="2"
+            default-active="0"
             @select="menuSelect">
-            <el-submenu index="1">
+            <el-submenu index="">
               <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航一</span>
+                <i class="el-icon-menu"></i>
+                <span>商品管理</span>
               </template>
               <el-menu-item-group>
-                <template slot="title">分组一</template>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
+                <!--<template slot="title">分组一</template>-->
+                <el-menu-item index="goods_list">商品列表</el-menu-item>
+                <el-menu-item index="goods_add">添加商品</el-menu-item>
               </el-menu-item-group>
-              <el-menu-item-group title="分组2">
-                <el-menu-item index="1-3">选项3</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
+              <!--<el-menu-item-group title="分组2">-->
+                <!--<el-menu-item index="1-3">选项3</el-menu-item>-->
+              <!--</el-menu-item-group>-->
+              <!--<el-submenu index="1-4">-->
+                <!--<template slot="title">选项4</template>-->
+                <!--<el-menu-item index="1-4-1">选项1</el-menu-item>-->
+              <!--</el-submenu>-->
             </el-submenu>
             <el-menu-item index="2">
               <i class="el-icon-menu"></i>
@@ -59,7 +58,7 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <router-view/>
+          <router-view @login="loginSuccess"/>
         </el-main>
       </el-container>
     </el-container>
@@ -67,6 +66,9 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {path} from '@/commons/address.js'
+
   export default {
     data() {
       return {
@@ -74,13 +76,55 @@
       }
     },
     created() {
+      this.getUserInfo()
     },
     methods: {
+      getUserInfo() {
+        axios.post(path()['userInfo']).then((response) => {
+          let data = response.data
+          if (data.status === 0) {
+            this.user = data.data
+          } else {
+            console.log(data.msg)
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      logout() {
+        axios.post(path()['logout']).then((response) => {
+          let data = response.data
+          if (data.status === 0) {
+            this.user = null
+            this.$message({
+              showClose: true,
+              message: '已退出登陆',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      loginSuccess(user) {
+        this.user = user
+      },
       menuSelect(index) {
         console.log(index)
       },
       userInfoCommand(command) {
         console.log(command)
+        switch (command) {
+          case 'logout':
+            this.logout()
+            break
+        }
       }
     }
   }

@@ -18,6 +18,8 @@ axios.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error)
 })
+// 跨域cookie
+axios.defaults.withCredentials = true
 
 Vue.use(ElementUI)
 

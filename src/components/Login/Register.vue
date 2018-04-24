@@ -99,6 +99,7 @@
             })
           }
         }).catch((error) => {
+          this.isLoading = false
           console.log(error)
         })
       }
