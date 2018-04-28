@@ -27,6 +27,9 @@ export function path() {
     /**
      * 商品
      */
+    'productionOn': server + 'goods/on_shelves.do', // 获取商品列表
+    'productionOff': server + 'goods/off_shelves.do', // 获取商品列表
+    'productionDelete': server + 'goods/delete.do', // 获取商品列表
     'productionList': server + 'goods/list.do', // 获取商品列表
     'productionDetail': server + 'goods/detail.do', // 获取商品详情
     'productionListByKeywords': server + 'goods/search.do', // 搜索商品
