@@ -27,8 +27,10 @@ export function path() {
     /**
      * 商品
      */
+    'imageUpload': server + 'goods/upload.do', // 获取商品列表
     'productionOn': server + 'goods/on_shelves.do', // 获取商品列表
     'productionOff': server + 'goods/off_shelves.do', // 获取商品列表
+    'propertyDelete': server + 'goods/delete_property.do', // 获取商品列表
     'productionDelete': server + 'goods/delete.do', // 获取商品列表
     'productionList': server + 'goods/list.do', // 获取商品列表
     'productionDetail': server + 'goods/detail.do', // 获取商品详情
