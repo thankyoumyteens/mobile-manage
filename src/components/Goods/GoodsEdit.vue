@@ -231,6 +231,9 @@
             if (data.status === 0) {
               this.goodsDetail = data.data
               this.propertiesList = this.goodsDetail.propertiesList
+              if (!this.propertiesList) {
+                this.propertiesList = []
+              }
               // 处理json数据
               for (let i = 0; i < this.propertiesList.length; i++) {
                 let item = this.propertiesList[i]
