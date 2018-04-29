@@ -26,7 +26,7 @@
       <div slot="header" class="clearfix">
         <span>编辑</span>
         <el-button style="float: right; padding: 3px 5px" @click="hideCard" type="text">取消</el-button>
-        <el-button style="float: right; padding: 3px 5px" type="text">完成</el-button>
+        <el-button style="float: right; padding: 3px 5px" @click="updateProperties()" type="text">完成</el-button>
       </div>
       <div class="text item">
         <el-upload
@@ -38,22 +38,27 @@
           <img v-if="imgUrl" :src="imgUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
+        <div class="text-add" v-show="showAddBar">
+          <el-input v-model="addKey"></el-input>
+          <el-input v-model="addValue"></el-input>
+          <el-button type="primary" @click="addNewProperty">添加</el-button>
+        </div>
         <div class="text">
-          <div v-for="(v1,k1) in property.text" :key="k1">
-            <div class="text-title">{{k1}}</div>
-            <div class="text-value">{{v1}}</div>
+          <div v-for="(item,index) in propertyKeys" :key="index">
+            <div class="text-title">{{item}}</div>
+            <el-input v-model="propertyValues[index]"></el-input>
           </div>
         </div>
         <div class="price">
           <div class="price-title">单价</div>
           <div class="price-value">
-            <el-input v-model="property.price" type="number"></el-input>
+            <el-input v-model="price" type="number"></el-input>
           </div>
         </div>
         <div class="stock">
           <div class="stock-title">库存</div>
           <div class="stock-value">
-            <el-input v-model="property.stock" type="number"></el-input>
+            <el-input v-model="stock" type="number"></el-input>
           </div>
         </div>
       </div>
@@ -71,10 +76,17 @@
       return {
         goodsDetail: {},
         propertiesList: [],
-        property: {},
+        propertiesId: -1,
+        propertyKeys: [],
+        propertyValues: [],
+        addKey: '',
+        addValue: '',
+        price: '',
+        stock: '',
         uploadUrl: '',
         imgUrl: '',
         imgUri: '',
+        showAddBar: false,
         cardShowStatus: false
       }
     },
@@ -83,26 +95,98 @@
       this.uploadUrl = path()['imageUpload']
     },
     methods: {
+      updateProperties() {
+        let text = '{'
+        for (let index in this.propertyKeys) {
+          let key = this.propertyKeys[index]
+          let value = this.propertyValues[index]
+          text += '"' + key + '"' + ':' + '"' + value + '"' + ','
+        }
+        text = text.substring(0, text.length - 1)
+        text += '}'
+        let params = {
+          id: this.propertiesId,
+          goodsId: this.goodsDetail.goodsId,
+          mainImage: this.imgUri,
+          price: this.price,
+          stock: this.stock,
+          text: text
+        }
+        axios.post(path()['updateProperties'], params).then((response) => {
+          let data = response.data
+          if (data.status === 0) {
+            this.hideCard()
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'success'
+            })
+            // 更新数据
+            this.getGoodsDetail()
+          } else {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
       addProperty() {
-        this.property = {}
+        this.hideCard()
+        if (this.propertiesList.length > 0) {
+          let property = this.propertiesList[0]
+          for (let key in property.text) {
+            if (property.text.hasOwnProperty(key)) {
+              this.propertyKeys.push(key)
+              this.propertyValues.push('')
+            }
+          }
+        } else {
+          // todo 第一次添加规格
+          this.showAddBar = true
+        }
+        this.price = ''
+        this.stock = ''
         this.imgUrl = ''
         this.imgUri = ''
         this.cardShowStatus = true
       },
+      addNewProperty() {
+        this.propertyKeys.push(this.addKey)
+        this.propertyValues.push(this.addValue)
+      },
       hideCard() {
+        this.showAddBar = false
+        this.propertiesId = -1
         this.cardShowStatus = false
-        this.property = {}
+        this.propertyKeys = []
+        this.propertyValues = []
+        this.price = ''
+        this.stock = ''
         this.imgUrl = ''
         this.imgUri = ''
       },
       handleEdit(index, row) {
-        this.property = row
+        this.hideCard()
+        this.propertiesId = row.propertiesId
+        for (let key in row.text) {
+          if (row.text.hasOwnProperty(key)) {
+            let value = row.text[key]
+            this.propertyKeys.push(key)
+            this.propertyValues.push(value)
+          }
+        }
+        this.price = row.price
+        this.stock = row.stock
         this.imgUrl = row.mainImage
         this.imgUri = this.imgUrl.substring(this.imgUrl.lastIndexOf('/') + 1)
         this.cardShowStatus = true
       },
       handleDelete(index, row) {
-        axios.post(path()['propertyDelete'] + '?propertiesId=' + row.propertiesId).then((response) => {
+        axios.get(path()['propertyDelete'] + '?propertiesId=' + row.propertiesId).then((response) => {
           let data = response.data
           if (data.status === 0) {
             this.$message({

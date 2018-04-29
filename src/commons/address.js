@@ -27,6 +27,7 @@ export function path() {
     /**
      * 商品
      */
+    'updateProperties': server + 'goods/update_properties.do', // 获取商品列表
     'imageUpload': server + 'goods/upload.do', // 获取商品列表
     'productionOn': server + 'goods/on_shelves.do', // 获取商品列表
     'productionOff': server + 'goods/off_shelves.do', // 获取商品列表
