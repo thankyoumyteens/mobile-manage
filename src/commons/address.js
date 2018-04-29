@@ -27,28 +27,19 @@ export function path() {
     /**
      * 商品
      */
-    'addGoods': server + 'goods/add.do', // 获取商品列表
-    'updateProperties': server + 'goods/update_properties.do', // 获取商品列表
-    'imageUpload': server + 'goods/upload.do', // 获取商品列表
-    'productionOn': server + 'goods/on_shelves.do', // 获取商品列表
-    'productionOff': server + 'goods/off_shelves.do', // 获取商品列表
-    'propertyDelete': server + 'goods/delete_property.do', // 获取商品列表
-    'productionDelete': server + 'goods/delete.do', // 获取商品列表
+    'addGoods': server + 'goods/add.do', // 添加商品
+    'updateProperties': server + 'goods/update_properties.do', // 添加/修改商品规格
+    'imageUpload': server + 'goods/upload.do', // 上传图片
+    'productionOn': server + 'goods/on_shelves.do', // 上架商品
+    'productionOff': server + 'goods/off_shelves.do', // 下架商品
+    'propertyDelete': server + 'goods/delete_property.do', // 删除商品规格
+    'productionDelete': server + 'goods/delete.do', // 删除商品
     'productionList': server + 'goods/list.do', // 获取商品列表
     'productionDetail': server + 'goods/detail.do', // 获取商品详情
     'productionListByKeywords': server + 'goods/search.do', // 搜索商品
     'commentList': server + 'comment/list.do', // 评论列表
     'commentListLevel': server + 'comment/list_level.do', // 筛选评论
     'commentListImg': server + 'comment/list_img.do', // 筛选有图评论
-    /**
-     * 购物车
-     */
-    'sub': server + 'cart/sub.do', // 购物车中商品减一
-    'add': server + 'cart/add.do', // 购物车中商品加一
-    'check': server + 'cart/check.do', // 选中购物车中的商品
-    'checkAll': server + 'cart/check_all.do', // 全选购物车中的商品
-    'getCart': server + 'cart/list.do', // 获取购物车列表
-    'addToCart': server + 'cart/create_goods.do', // 添加商品到购物车
     /**
      * 收货地址
      */
@@ -60,17 +51,11 @@ export function path() {
     /**
      * 订单
      */
-    'payLink': server + 'pay/alipay.do', // 创建订单
     'createOrder': server + 'order/create.do', // 创建订单
     'orderList': server + 'order/list.do', // 订单列表
     'orderListNotPay': server + 'order/list_not_pay.do', // 订单列表
     'orderListPayed': server + 'order/list_payed.do', // 订单列表
     'orderDetail': server + 'order/detail.do', // 订单详情
-    'orderDetailByNo': server + 'order/detail_by_no.do', // 订单详情
-    /**
-     * 首页
-     */
-    'homeImgList': server + 'home/images.do', // 获取首页轮播图片列表
-    'homePlaceholder': server + 'home/placeholder.do' // 获取首页搜索框提示文字
+    'orderDetailByNo': server + 'order/detail_by_no.do' // 订单详情
   }
 }
