@@ -245,7 +245,11 @@
                 }
               }
             } else {
-              console.log(data.msg)
+              this.$message({
+                showClose: true,
+                message: data.msg,
+                type: 'error'
+              })
             }
           }).catch((error) => {
             console.log(error)

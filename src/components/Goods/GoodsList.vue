@@ -102,7 +102,11 @@
           if (data.status === 0) {
             this.goodsList = data.data.list
           } else {
-            console.log(data.msg)
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
           }
         }).catch((error) => {
           console.log(error)
