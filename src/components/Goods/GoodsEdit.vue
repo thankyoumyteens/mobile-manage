@@ -22,7 +22,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-card class="box-card" v-show="cardShowStatus">
+    <el-card class="box-card edit-wrapper" v-show="cardShowStatus">
       <div slot="header" class="clearfix">
         <span>编辑</span>
         <el-button style="float: right; padding: 3px 5px" @click="hideCard" type="text">取消</el-button>
@@ -258,11 +258,18 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .goods-edit
+    position relative
     .add-button-wrapper
       margin 1em 0
     .table-img
       width 100px
       height 100px
+    .edit-wrapper
+      position fixed
+      top 70px
+      width 500px
+      left 50%
+      transform translateX(-50%)
     .avatar-uploader
       .el-upload
         border 1px dashed #d9d9d9

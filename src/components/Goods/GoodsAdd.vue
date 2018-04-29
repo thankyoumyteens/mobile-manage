@@ -46,7 +46,7 @@
       </el-upload>
     </div>
     <div class="add-button-wrapper">
-      <el-button type="primary" @click="addGoods">新增</el-button>
+      <el-button type="primary" @click="addGoods">完成</el-button>
     </div>
   </div>
 </template>
@@ -180,4 +180,6 @@
           width 178px
           height 178px
           display block
+    .add-button-wrapper
+      margin 1em 0
 </style>
