@@ -5,6 +5,8 @@ export function path() {
   let local = 'manage/'
   let server = 'http://localhost:8088/mobile/manage/'
   // server = local
+
+  // todo 分页
   return {
     /**
      * 用户
@@ -52,7 +54,7 @@ export function path() {
      * 订单
      */
     'createOrder': server + 'order/create.do', // 创建订单
-    'orderList': server + 'order/list.do', // 订单列表
+    'orderList': server + 'order/list_by_seller.do', // 订单列表
     'orderListNotPay': server + 'order/list_not_pay.do', // 订单列表
     'orderListPayed': server + 'order/list_payed.do', // 订单列表
     'orderDetail': server + 'order/detail.do', // 订单详情
