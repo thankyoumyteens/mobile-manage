@@ -16,7 +16,8 @@
     "axios": "^0.18.0",
     "qs": "^6.5.1",
     "better-scroll": "^1.10.0",
-    "element-ui": "^2.3.6"
+    "element-ui": "^2.3.6",
+    "vue-quill-editor": "^3.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

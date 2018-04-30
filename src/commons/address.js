@@ -38,6 +38,8 @@ export function path() {
     'productionDelete': server + 'goods/delete.do', // 删除商品
     'productionList': server + 'goods/list.do', // 获取商品列表
     'productionDetail': server + 'goods/detail.do', // 获取商品详情
+    'goodsDetail': server + 'goods/goods_detail.do', // 获取商品详情
+    'updateGoodsDetail': server + 'goods/update_detail.do', // 获取商品详情
     'productionListByKeywords': server + 'goods/search.do', // 搜索商品
     'commentList': server + 'comment/list.do', // 评论列表
     'commentListLevel': server + 'comment/list_level.do', // 筛选评论

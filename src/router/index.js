@@ -5,6 +5,7 @@ import Register from '@/components/Login/Register'
 import GoodsList from '@/components/Goods/GoodsList'
 import GoodsEdit from '@/components/Goods/GoodsEdit'
 import GoodsAdd from '@/components/Goods/GoodsAdd'
+import GoodsDetail from '@/components/Goods/GoodsDetail'
 import OrderList from '@/components/Order/OrderList'
 
 Vue.use(Router)
@@ -40,6 +41,11 @@ export default new Router({
       path: '/order_list',
       name: 'OrderList',
       component: OrderList
+    },
+    {
+      path: '/goods_detail',
+      name: 'GoodsDetail',
+      component: GoodsDetail
     }
   ]
 })
