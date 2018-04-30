@@ -6,7 +6,7 @@
         <template slot-scope="scope">
           <div class="order-item" v-for="(item,index) in scope.row.orderItemList" :key="index">
             <div class="goods-name">{{item.productName}}</div>
-            <div class="goods-detail">{{item.detail}}</div>
+            <div class="goods-detail">{{item.detail}} x {{item.quantity}}</div>
           </div>
           <!--<el-button size="mini" @click="showItem(scope.$index, scope.row)">查看</el-button>-->
         </template>
@@ -19,10 +19,10 @@
                      @click="orderSend(scope.$index, scope.row)">
             发货
           </el-button>
-          <el-button size="mini" v-if="scope.row.status===10" type="danger"
-                     @click="orderCancel(scope.$index, scope.row)">
-            取消订单
-          </el-button>
+          <!--<el-button size="mini" v-if="scope.row.status===10" type="danger"-->
+          <!--@click="orderCancel(scope.$index, scope.row)">-->
+          <!--取消订单-->
+          <!--</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +44,27 @@
     },
     methods: {
       orderSend(index, row) {
-        console.log(row)
+        axios.post(path()['orderSend'] + '?orderNo=' + row.orderNo).then((response) => {
+          let data = response.data
+          if (data.status === 0) {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'success'
+            })
+            // 更新数据
+            this.orderList[index].status = 40
+            this.orderList[index].statusMsg = '已发货'
+          } else {
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
       },
       orderCancel(index, row) {
         console.log(row)
@@ -55,7 +75,6 @@
       getOrderList() {
         axios.post(path()['orderList']).then((response) => {
           let data = response.data
-          console.log(data)
           if (data.status === 0) {
             this.orderList = data.data.list
           } else {

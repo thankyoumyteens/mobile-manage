@@ -53,7 +53,7 @@ export function path() {
     /**
      * 订单
      */
-    'createOrder': server + 'order/create.do', // 创建订单
+    'orderSend': server + 'order/send.do', // 发货
     'orderList': server + 'order/list_by_seller.do', // 订单列表
     'orderListNotPay': server + 'order/list_not_pay.do', // 订单列表
     'orderListPayed': server + 'order/list_payed.do', // 订单列表
