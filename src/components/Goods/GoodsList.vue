@@ -6,7 +6,7 @@
       <el-table-column prop="subtitle" label="副标题"></el-table-column>
       <el-table-column prop="price" label="价格" width="100"></el-table-column>
       <el-table-column prop="statusMsg" label="状态" width="50"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="350">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" @click="handleDetail(scope.$index, scope.row)">详情</el-button>

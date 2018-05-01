@@ -1,7 +1,6 @@
 <template>
   <div class="goods-detail">
-    <div v-loading="imageLoading"
-         element-loading-text="请稍等，图片上传中">
+    <div v-loading="imageLoading" element-loading-text="请稍等，图片上传中">
       <quill-editor v-model="detail.text" ref="newEditor" @change="change"></quill-editor>
       <!-- 文件上传input 将它隐藏-->
       <el-upload style="display:none" :action="uploadUrl" :show-file-list="false" :before-upload='newEditorbeforeupload'
@@ -115,5 +114,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  .goods-detail
+    .quill-editor
+      width 50%
 </style>
