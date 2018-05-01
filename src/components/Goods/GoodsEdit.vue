@@ -23,42 +23,44 @@
       </el-table-column>
     </el-table>
     <el-card class="box-card edit-wrapper" v-show="cardShowStatus">
-      <div slot="header" class="clearfix">
-        <span>编辑</span>
-        <el-button style="float: right; padding: 3px 5px" @click="hideCard" type="text">取消</el-button>
-        <el-button style="float: right; padding: 3px 5px" @click="updateProperties()" type="text">完成</el-button>
-      </div>
-      <div class="text item">
-        <el-upload
-          class="avatar-uploader"
-          :action="uploadUrl"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="imgUrl" :src="imgUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-        <div class="text-add" v-show="showAddBar">
-          <el-input v-model="addKey"></el-input>
-          <el-input v-model="addValue"></el-input>
-          <el-button type="primary" @click="addNewProperty">添加</el-button>
+      <div v-loading="imageLoading" element-loading-text="请稍等，图片上传中">
+        <div slot="header" class="clearfix">
+          <span>编辑</span>
+          <el-button style="float: right; padding: 3px 5px" @click="hideCard" type="text">取消</el-button>
+          <el-button style="float: right; padding: 3px 5px" @click="updateProperties()" type="text">完成</el-button>
         </div>
-        <div class="text">
-          <div v-for="(item,index) in propertyKeys" :key="index">
-            <div class="text-title">{{item}}</div>
-            <el-input v-model="propertyValues[index]"></el-input>
+        <div class="text item">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl" :src="imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div class="text-add" v-show="showAddBar">
+            <el-input v-model="addKey"></el-input>
+            <el-input v-model="addValue"></el-input>
+            <el-button type="primary" @click="addNewProperty">添加</el-button>
           </div>
-        </div>
-        <div class="price">
-          <div class="price-title">单价</div>
-          <div class="price-value">
-            <el-input v-model="price" type="number"></el-input>
+          <div class="text">
+            <div v-for="(item,index) in propertyKeys" :key="index">
+              <div class="text-title">{{item}}</div>
+              <el-input v-model="propertyValues[index]"></el-input>
+            </div>
           </div>
-        </div>
-        <div class="stock">
-          <div class="stock-title">库存</div>
-          <div class="stock-value">
-            <el-input v-model="stock" type="number"></el-input>
+          <div class="price">
+            <div class="price-title">单价</div>
+            <div class="price-value">
+              <el-input v-model="price" type="number"></el-input>
+            </div>
+          </div>
+          <div class="stock">
+            <div class="stock-title">库存</div>
+            <div class="stock-value">
+              <el-input v-model="stock" type="number"></el-input>
+            </div>
           </div>
         </div>
       </div>
@@ -74,6 +76,7 @@
   export default {
     data() {
       return {
+        imageLoading: false,
         goodsDetail: {},
         propertiesList: [],
         propertiesId: -1,
@@ -210,17 +213,19 @@
       handleAvatarSuccess(res, file) {
         this.imgUrl = res.data.url
         this.imgUri = res.data.uri
+        this.imageLoading = false
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg'
         const isLt2M = file.size / 1024 / 1024 < 2
 
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
+          this.$message.error('上传图片只能是 JPG 格式!')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传图片大小不能超过 2MB!')
         }
+        this.imageLoading = true
         return isJPG && isLt2M
       },
       getGoodsDetail() {

@@ -19,31 +19,34 @@
       <div class="text-title">商品副标题</div>
       <el-input v-model="subtitle"></el-input>
     </div>
-    <div class="goods-add-item">
-      <div class="text-title">商品主图</div>
-      <el-upload
-        class="avatar-uploader"
-        :action="uploadUrl"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="imgUrl" :src="imgUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
-    </div>
-    <div class="goods-add-item">
-      <div class="text-title">商品图片</div>
-      <el-upload
-        class="upload-demo"
-        :action="uploadUrl"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :file-list="fileList2"
-        list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传jpg文件</div>
-      </el-upload>
+    <div v-loading="imageLoading" element-loading-text="请稍等，图片上传中">
+      <div class="goods-add-item">
+        <div class="text-title">商品主图</div>
+        <el-upload
+          class="avatar-uploader"
+          :action="uploadUrl"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imgUrl" :src="imgUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+      <div class="goods-add-item">
+        <div class="text-title">商品图片</div>
+        <el-upload
+          class="upload-demo"
+          :action="uploadUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :before-upload="beforeAvatarUpload"
+          :file-list="fileList2"
+          list-type="picture">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg文件</div>
+        </el-upload>
+      </div>
     </div>
     <div class="add-button-wrapper">
       <el-button type="primary" @click="addGoods">完成</el-button>
@@ -62,6 +65,7 @@
     },
     data() {
       return {
+        imageLoading: false,
         categoryList: [],
         categoryId: -1,
         name: '',
@@ -122,10 +126,12 @@
         }
         this.fileList2.push(item)
         console.log(this.fileList2)
+        this.imageLoading = false
       },
       handleAvatarSuccess(res, file) {
         this.imgUrl = res.data.url
         this.imgUri = res.data.uri
+        this.imageLoading = false
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg'
@@ -137,6 +143,7 @@
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!')
         }
+        this.imageLoading = true
         return isJPG && isLt2M
       },
       getCategoryList() {
