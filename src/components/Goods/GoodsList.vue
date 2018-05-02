@@ -15,6 +15,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination background layout="prev, pager, next"
+                   @current-change="changePage"
+                   :page-size="pageInfo.pageSize"
+                   :page-count="pageInfo.pages"
+                   :total="pageInfo.total">
+    </el-pagination>
   </div>
 </template>
 
@@ -26,13 +32,23 @@
   export default {
     data() {
       return {
-        goodsList: []
+        goodsList: [],
+        pageNum: 1,
+        pageInfo: {
+          pageSize: 10,
+          total: 0,
+          pages: 1
+        }
       }
     },
     mounted() {
       this.getGoodsList()
     },
     methods: {
+      changePage(pageIndex) {
+        this.pageNum = pageIndex
+        this.getGoodsList()
+      },
       handleSale(index, row) {
         let status = row.status
         let status2 = -1
@@ -104,10 +120,12 @@
         })
       },
       getGoodsList() {
-        axios.post(path()['productionList']).then((response) => {
+        axios.post(path()['productionList'] + '?pageNum=' + this.pageNum).then((response) => {
           let data = response.data
           if (data.status === 0) {
             this.goodsList = data.data.list
+            this.pageInfo = data.data
+            this.pageInfo.list = null
           } else {
             this.$message({
               showClose: true,
@@ -124,5 +142,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  .goods-list
+    .el-pagination
+      margin 1em 0
+      width 100%
+      text-align center
 </style>
