@@ -148,7 +148,6 @@
             }
           }
         } else {
-          // todo 第一次添加规格
           this.showAddBar = true
         }
         this.price = ''
