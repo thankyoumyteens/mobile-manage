@@ -2,7 +2,7 @@
  * Created by Admin on 2017/11/24.
  */
 export function path() {
-  let local = 'manage/'
+  let local = ''
   let server = 'http://localhost:8088/mobile/manage/'
   // server = local
 
